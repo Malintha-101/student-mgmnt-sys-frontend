@@ -2,7 +2,6 @@ import {
     ArrowRightIcon,
     ArrowLeftIcon,
     HomeIcon,
-    CogIcon,
     EllipsisVerticalIcon,
     NewspaperIcon,
     AcademicCapIcon,
@@ -51,7 +50,7 @@ import {
             <ul className="flex-1 px-3 ">{children}</ul>
             <div className="flex border-t p-3">
               <img
-                src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true&name=Mark+Ruffalo"
+                src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true&name=Malintha+Kavinda"
                 alt=""
                 className="h-10 w-10 rounded-md"
               />
@@ -62,8 +61,8 @@ import {
             `}
               >
                 <div className="leading-4">
-                  <h4 className="font-semibold text-gray-50">Mark Ruffalo</h4>
-                  <span className="text-xs text-gray-300">mark@gmail.com</span>
+                  <h4 className="font-semibold text-gray-50">Malintha Kavinda</h4>
+                  <span className="text-xs text-gray-300">malintha@gmail.com</span>
                 </div>
                 <EllipsisVerticalIcon className="h-6 w-6" />
               </div>
@@ -94,10 +93,6 @@ import {
         icon: <UserGroupIcon />,
         text: 'Batches',
       },
-    //   {
-    //     icon: <CogIcon />,
-    //     text: 'Settings',
-    //   },
     ];
   
     // Desktop Sidebar
