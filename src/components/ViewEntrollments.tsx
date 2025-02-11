@@ -73,7 +73,6 @@ const ViewEntrollments = ({ studentId, onClose }: ViewEntrollmentsProps) => {
   };
 
   const handleUpdate = async () => {
-    const enrolledDate = new Date().toISOString(); // Current date in ISO format
 
     try {
       await updateEntrollment(studentId, { batchIds: selectedBatchIds });
