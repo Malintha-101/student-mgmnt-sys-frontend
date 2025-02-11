@@ -5,7 +5,7 @@ import BatchTable from '../../components/BatchTable';
 const Batch = () => {
     
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
         <MakeSidebar />
         <div className="flex-1 bg-gray-50 m-4">
             <BatchTable />

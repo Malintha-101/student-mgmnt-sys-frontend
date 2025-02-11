@@ -24,6 +24,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onClose, refreshCourses }) => {
       setCourse({ name: '', duration: '', description: '' }); // Clear the form
       onClose(); // Close the modal
       refreshCourses(); // Refresh the course table
+      alert('Course added successfully');
     } catch (error) {
       console.error(error);
     }

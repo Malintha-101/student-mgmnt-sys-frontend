@@ -2,22 +2,20 @@ import { useState, useEffect } from "react";
 import { Table, Modal } from "antd";
 import AddBatch from "./AddBatch";
 import EditBatch from "./EditBatch";
-import ViewEntrollments from "./ViewEntrollments"; // Import ViewEntrollments
 import { getBatches } from "../services/batchService";
-import { getEntrollments, addEntrollment } from "../services/entrollmentService";
+import { getEntrollments, updateEntrollment } from "../services/entrollmentService";
 import { JSX } from "react";
 
-interface EntrollmentProps {
+interface ViewEntrollmentsProps {
   studentId: number;
   onClose: () => void;
 }
 
-const Entrollment = ({ studentId, onClose }: EntrollmentProps) => {
+const ViewEntrollments = ({ studentId, onClose }: ViewEntrollmentsProps) => {
   const [search, setSearch] = useState("");
   const onSearch = (value: string) => setSearch(value);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [isViewModalVisible, setIsViewModalVisible] = useState(false); // State for ViewEntrollments modal
   const [selectedBatch, setSelectedBatch] = useState<Batch | null>(null);
   const [data, setData] = useState<Batch[]>([]);
   const [selectedBatchIds, setSelectedBatchIds] = useState<number[]>([]);
@@ -52,10 +50,6 @@ const Entrollment = ({ studentId, onClose }: EntrollmentProps) => {
     setSelectedBatch(null);
   };
 
-  const handleViewCancel = () => {
-    setIsViewModalVisible(false);
-  };
-
   interface Batch {
     id: number;
     name: string;
@@ -78,17 +72,18 @@ const Entrollment = ({ studentId, onClose }: EntrollmentProps) => {
     );
   };
 
-  const handleSubmit = async () => {
-    const enrolledDate = new Date().toISOString(); // Current date in ISO format
+  const handleUpdate = async () => {
 
     try {
-      await addEntrollment({ studentId, batchIds: selectedBatchIds, enrolledDate });
-      alert("Entrollment successful!");
+      await updateEntrollment(studentId, { batchIds: selectedBatchIds });
+      alert("Entrollment updated successfully!");
       setSelectedBatchIds([]);
-      console.log("Submitted Batch IDs:", selectedBatchIds);
+      console.log("Updated Batch IDs:", selectedBatchIds);
       onClose();
+      // refresh the window
+        window.location.reload();
     } catch (error) {
-      console.error("Error submitting entrollment:", error);
+      console.error("Error updating entrollment:", error);
     }
   };
 
@@ -138,12 +133,6 @@ const Entrollment = ({ studentId, onClose }: EntrollmentProps) => {
             onChange={(e) => onSearch(e.target.value)}
             className="border border-gray-300 rounded-md p-2"
           />
-          <button
-            className="p-2 bg-blue-950 text-white rounded-md cursor-pointer"
-            onClick={() => setIsViewModalVisible(true)}
-          >
-            Edit Entrollments
-          </button>
         </div>
       </div>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
@@ -169,25 +158,15 @@ const Entrollment = ({ studentId, onClose }: EntrollmentProps) => {
           />
         )}
       </Modal>
-      <Modal
-        title="View Entrollments"
-        visible={isViewModalVisible}
-        onCancel={handleViewCancel}
-        footer={null}
+      <button
+        type="button"
+        className="p-2 bg-blue-950 text-white rounded-md cursor-pointer"
+        onClick={handleUpdate}
       >
-        <ViewEntrollments studentId={studentId} onClose={handleViewCancel} />
-      </Modal>
-      {!selectedBatchIds.length && (
-        <button
-          type="submit"
-          className="p-2 bg-blue-950 text-white rounded-md cursor-pointer"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-      )}
+        Update
+      </button>
     </div>
   );
 };
 
-export default Entrollment;
+export default ViewEntrollments;
