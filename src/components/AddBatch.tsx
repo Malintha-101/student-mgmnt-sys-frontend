@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { addBatch } from "../services/batchService";
 import { getCourses } from "../services/courseService";
 
@@ -48,6 +47,7 @@ const AddBatch = ({ onClose, refreshBatches }: AddBatchProps) => {
       await addBatch(batch);
       onClose();
       refreshBatches();
+      alert("Batch added successfully");
     } catch (error) {
       console.error(error);
     }
