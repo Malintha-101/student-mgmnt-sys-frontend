@@ -76,10 +76,10 @@ import {
   export default function MakeSidebar() {
     const [expanded, setExpanded] = useState(true);
     const navBarItems = [
-      {
-        icon: <HomeIcon />,
-        text: 'Dashboard',
-      },
+      // {
+      //   icon: <HomeIcon />,
+      //   text: 'Dashboard',
+      // },
       {
         icon: <AcademicCapIcon />,
         text: 'Students',
