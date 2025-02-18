@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Extract PR Number
         id: extract_pr
-        run: echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+        run: |
+          echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
 
       - name: Trigger GitHub PR Reviewer Workflow
         run: |
