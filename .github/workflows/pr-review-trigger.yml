@@ -31,6 +31,8 @@ jobs:
         run: |
           gh api repos/Malintha-101/github-pr-reviewer-1.0/dispatches \
             -f event_type=trigger-review \
-            -f client_payload="{\"pr_number\": \"${{ env.PR_NUMBER }}\", \"repo_owner\": \"${{ env.REPO_OWNER }}\", \"repo_name\": \"${{ env.REPO_NAME }}\"}"
+            -f client_payload.pr_number=${{ env.PR_NUMBER }} \
+            -f client_payload.repo_owner=${{ env.REPO_OWNER }} \
+            -f client_payload.repo_name=${{ env.REPO_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
