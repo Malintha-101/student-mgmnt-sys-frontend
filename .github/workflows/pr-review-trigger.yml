@@ -4,7 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-    # repository_dispatch event trigger for cross-repository dispatches
   repository_dispatch:
     types: [trigger-review]
 
