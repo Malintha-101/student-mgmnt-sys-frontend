@@ -20,16 +20,16 @@ jobs:
         run: |
           echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
 
-      - name: Trigger GitHub PR Reviewer Workflow
-        run: |
-          curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
-               -H "Authorization: token ${{ secrets.G_TOKEN }}" \
-               -H "Content-Type: application/json" \
-               -d '{
-                 "event_type": "trigger-review",
-                 "client_payload": { "pr_number": "${{ env.PR_NUMBER }}", "repo_name": "${{ env.REPO_NAME }}" }
-               }' \
-               https://api.github.com/repos/Malintha-101/github-pr-reviewer-1.0/dispatches
+      # - name: Trigger GitHub PR Reviewer Workflow
+      #   run: |
+      #     curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
+      #          -H "Authorization: token ${{ secrets.G_TOKEN }}" \
+      #          -H "Content-Type: application/json" \
+      #          -d '{
+      #            "event_type": "trigger-review",
+      #            "client_payload": { "pr_number": "${{ env.PR_NUMBER }}", "repo_name": "${{ env.REPO_NAME }}" }
+      #          }' \
+      #          https://api.github.com/repos/Malintha-101/github-pr-reviewer-1.0/dispatches
 
       - name: Run curl command with PR_NUMBER and REPO_NAME
         run: |
