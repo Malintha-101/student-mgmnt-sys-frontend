@@ -1,16 +1,18 @@
-import CourseTable from '../../components/CoursesTable'
-import MakeSidebar from '../../components/Sidebar'
+import CourseTable from '../../components/CoursesTable';
+import MakeSidebar from '../../components/Sidebar';
 
-function course(){
+const Course = () => {
+    
   return (
     <div className="flex min-h-screen">
-        <MakeSidebar>
-        <div class="flex-1 bg-gray-50 m-4">
-            <CourseTable>
+        <MakeSidebar />
+        <div className="flex-1 bg-gray-50 m-4">
+            <CourseTable />
         </div>
     </div>
   )
-}
+  
+};
 
-export default course;
+export default Course;
 
