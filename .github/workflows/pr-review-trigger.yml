@@ -3,7 +3,7 @@ name: Trigger PR Review
 on:
   issue_comment:
     types: [created]
-    
+
     # repository_dispatch event trigger for cross-repository dispatches
   repository_dispatch:
     types: [trigger-review]
@@ -28,7 +28,7 @@ jobs:
                  "event_type": "trigger-review",
                  "client_payload": { "pr_number": "${{ env.PR_NUMBER }}" }
                }' \
-               https://api.github.com/Malintha-101/github-pr-reviewer-1.0/dispatches
+               https://api.github.com/repos/Malintha-101/github-pr-reviewer-1.0/dispatches
 
       - name: Run curl command with PR_NUMBER
         run: |
@@ -39,7 +39,7 @@ jobs:
                  "event_type": "trigger-review",
                  "client_payload": { "pr_number": "${{ env.PR_NUMBER }}" }
                }' \
-               https://api.github.com/Malintha-101/github-pr-reviewer-1.0/dispatches
+               https://api.github.com/repos/Malintha-101/github-pr-reviewer-1.0/dispatches
         shell: /usr/bin/bash -e {0}
         env:
           PR_NUMBER: ${{ env.PR_NUMBER }}
