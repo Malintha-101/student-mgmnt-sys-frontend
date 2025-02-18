@@ -4,8 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-  repository_dispatch:
-    types: [trigger-review]
 
 jobs:
   trigger-review:
