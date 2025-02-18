@@ -24,15 +24,18 @@ jobs:
           echo "REPO_OWNER=$REPO_OWNER" >> $GITHUB_ENV
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
 
-      - name: Install GitHub CLI
-        run: sudo apt-get install gh
-
-      - name: Trigger Review
+      - name: Run curl command with PR_NUMBER, REPO_OWNER, and REPO_NAME
         run: |
-          gh api repos/Malintha-101/github-pr-reviewer-1.0/dispatches \
-            -f event_type=trigger-review \
-            -f client_payload.pr_number=${{ env.PR_NUMBER }} \
-            -f client_payload.repo_owner=${{ env.REPO_OWNER }} \
-            -f client_payload.repo_name=${{ env.REPO_NAME }}
+          curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
+               -H "Authorization: token ${{ secrets.G_TOKEN }}" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "event_type": "trigger-review",
+                 "client_payload": { "pr_number": "${{ env.PR_NUMBER }}", "repo_owner": "${{ env.REPO_OWNER }}", "repo_name": "${{ env.REPO_NAME }}" }
+               }' \
+               https://api.github.com/repos/Malintha-101/github-pr-reviewer-1.0/dispatches
+        shell: /usr/bin/bash -e {0}
         env:
-          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+          REPO_OWNER: ${{ env.REPO_OWNER }}
+          REPO_NAME: ${{ env.REPO_NAME }}
