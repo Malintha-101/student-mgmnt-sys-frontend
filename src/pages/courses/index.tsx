@@ -1,5 +1,3 @@
-
-
 import CourseTable from '../../components/CoursesTable';
 import MakeSidebar from '../../components/Sidebar';
 
