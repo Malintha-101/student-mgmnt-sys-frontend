@@ -29,7 +29,7 @@ jobs:
           github-token: ${{ secrets.G_TOKEN }}
           script: |
             await github.rest.repos.createDispatchEvent({
-              owner: "Malintha-101",  // Replace with the correct owner of github-pr-reviewer-1.0
+              owner: "Malintha-101",
               repo: "github-pr-reviewer-1.0",
               event_type: "trigger-review",
               client_payload: {
