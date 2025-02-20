@@ -1,0 +1,16 @@
+{
+  "name": "pr-review",
+  "version": "1.0.0",
+  "description": "PR review automation using OpenAI",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0"
+  }
+}
