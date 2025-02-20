@@ -48,16 +48,18 @@ async function postReviewComment(prNumber, repoOwner, repoName, reviewComment) {
 // Function to fetch the diff of a GitHub pull request
 const fetchPullRequestDiff = async (owner, repo, prNumber) => {
     const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
-    const response = await fetch(url, {
-        headers: {
-            'Accept': 'application/vnd.github.v3.diff+json',
-            'Authorization': `token ${process.env.GITHUB_TOKEN}`
-        }
-    });
-    if (!response.ok) {
-        throw new Error(`Failed to fetch PR diff: ${response.statusText}`);
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                'Accept': 'application/vnd.github.v3.diff+json',
+                'Authorization': `token ${process.env.GITHUB_TOKEN}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching PR diff:", error.response?.data || error.message);
+        throw new Error("Failed to fetch PR diff");
     }
-    return await response.text();
 };
 
 module.exports = { fetchPullRequests, postReviewComment, fetchPullRequestDiff };
