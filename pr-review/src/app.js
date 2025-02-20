@@ -28,15 +28,14 @@ const runReviewProcess = async () => {
 
     try {
         const prs = await fetchPullRequests(repoOwner, repoName);
-
-        // Find the PR data
+        // Find the pull request by number
         const pr = prs.find(pr => pr.number == prNumber);
         if (!pr) {
             console.error(`Pull request #${prNumber} not found in repository ${repoName}.`);
         }
         // console.log(`PR data: ${JSON.stringify(pr)}`);
 
-        // Fetch the PR diff
+        // Fetch the diff of the pull request
         const diff = await fetchPullRequestDiff(repoOwner, repoName, prNumber);
         if (!diff) {
             console.error(`No diff found for pull request #${prNumber} in repository ${repoName}.`);
@@ -44,12 +43,15 @@ const runReviewProcess = async () => {
         }
         // console.log(`PR diff: ${diff}`);
 
-        // Review the PR diff using OpenAI
         const review = await reviewPullRequest(pr, diff);
 
         // Post the review comment to GitHub
         const comment = await postReviewComment(pr.number, repoOwner, repoName, review);
         console.log(`Review posted for PR #${prNumber} in repository ${repoOwner}/${repoName}. Comment number: ${comment.id}`);
+
+        // Write the review comment to a file to trigger GitHub action
+        const filePath = path.join(__dirname, 'review_comment.txt');
+        console.log(`Review comment written to ${filePath}`);
 
     } catch (error) {
         console.error("Error during API call:", error.message);
