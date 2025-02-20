@@ -37,6 +37,10 @@ jobs:
         run: npm install
         continue-on-error: false
 
+      - name: Install dotenv
+        run: npm install dotenv
+        continue-on-error: false
+
       - name: Run Review Comment Generator
         run: |
           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
