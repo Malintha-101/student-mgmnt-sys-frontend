@@ -15,7 +15,7 @@ on:
 
 jobs:
   trigger-review:
-    if: contains(github.event.comment.body, '@PR_review')
+    if: contains(github.event.comment.body, '@pr_review')
     runs-on: ubuntu-latest
 
     steps:
