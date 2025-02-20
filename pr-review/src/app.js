@@ -1,7 +1,7 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const { reviewPullRequest } = require("./services/openAIService");
 const { fetchPullRequests, postReviewComment } = require("./services/githubService");
-const path = require('path');
 
 const prNumber = process.argv[2];
 const repoOwner = process.argv[3];
