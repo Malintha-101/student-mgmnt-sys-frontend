@@ -41,7 +41,7 @@ const runReviewProcess = async () => {
             console.error(`No diff found for pull request #${prNumber} in repository ${repoName}.`);
             return;
         }
-        // console.log(`PR diff: ${diff}`);
+        console.log(`PR diff: ${diff}`);
 
         const review = await reviewPullRequest(pr, diff);
 
