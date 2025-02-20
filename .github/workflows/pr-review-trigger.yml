@@ -23,14 +23,14 @@ jobs:
           echo "REPO_OWNER=$REPO_OWNER" >> $GITHUB_ENV
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
 
-      - name: Trigger Review in github-pr-reviewer-1.0
+      - name: Trigger Review in student-mgmnt-sys
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.G_TOKEN }}
           script: |
             await github.rest.repos.createDispatchEvent({
-              owner: "Malintha-101",
-              repo: "github-pr-reviewer-1.0",
+              owner: process.env.REPO_OWNER,
+              repo: process.env.REPO_NAME,
               event_type: "trigger-review",
               client_payload: {
                 pr_number: process.env.PR_NUMBER,

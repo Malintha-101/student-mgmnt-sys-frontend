@@ -1,0 +1,51 @@
+name: Print Review Comment on Commit to Main or Dev
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types: [trigger-review]
+
+jobs:
+  print-review-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        continue-on-error: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+        continue-on-error: false
+
+      - name: Create .env file
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.G_TOKEN }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPEN_API}}" >> .env
+        continue-on-error: false
+
+      - name: Install dependencies
+        run: npm install
+        continue-on-error: false
+
+      - name: Run Review Comment Generator
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            PR_NUMBER=${{ github.event.client_payload.pr_number }}
+            REPO_OWNER=${{ github.event.client_payload.repo_owner }}
+            REPO_NAME=${{ github.event.client_payload.repo_name }}
+          else
+            PR_NUMBER=${{ github.event.pull_request.number }}
+            REPO_OWNER=${{ github.event.repository.owner.login }}
+            REPO_NAME=${{ github.event.repository.full_name }}
+          fi
+          npm start $PR_NUMBER $REPO_OWNER $REPO_NAME
+        continue-on-error: false
