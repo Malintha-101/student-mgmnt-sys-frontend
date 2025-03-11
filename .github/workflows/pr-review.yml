@@ -1,4 +1,4 @@
-# name: PR Review Workflow
+name: PR Review Workflow
 
 on:
   issue_comment:
@@ -14,93 +14,81 @@ on:
       - platform-pr-test
   repository_dispatch:
     types: [trigger-review]
-# on:
-#   issue_comment:
-#     types: [created]
-#   pull_request:
-#     types: [synchronize, opened, reopened]
-#     branches:
-#       - main
-#   push:
-#     branches:
-#       - main
-#   repository_dispatch:
-#     types: [trigger-review]
 
-# jobs:
-#   trigger-review:
-#     if: contains(github.event.comment.body, '@pr_review')
-#     runs-on: ubuntu-latest
+jobs:
+  trigger-review:
+    if: contains(github.event.comment.body, '@pr_review')
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Extract PR Number
-#         id: extract_pr
-#         run: echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+    steps:
+      - name: Extract PR Number
+        id: extract_pr
+        run: echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
 
-#       - name: Extract Repository Info
-#         id: extract_repo
-#         run: |
-#           REPO_FULL_NAME=${{ github.repository }}
-#           REPO_OWNER=$(echo $REPO_FULL_NAME | cut -d'/' -f1)
-#           REPO_NAME=$(echo $REPO_FULL_NAME | cut -d'/' -f2)
-#           echo "REPO_OWNER=$REPO_OWNER" >> $GITHUB_ENV
-#           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+      - name: Extract Repository Info
+        id: extract_repo
+        run: |
+          REPO_FULL_NAME=${{ github.repository }}
+          REPO_OWNER=$(echo $REPO_FULL_NAME | cut -d'/' -f1)
+          REPO_NAME=$(echo $REPO_FULL_NAME | cut -d'/' -f2)
+          echo "REPO_OWNER=$REPO_OWNER" >> $GITHUB_ENV
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
 
-#       - name: Trigger Review in student-mgmnt-sys
-#         uses: actions/github-script@v6
-#         with:
-#           github-token: ${{ secrets.G_TOKEN }}
-#           script: |
-#             await github.rest.repos.createDispatchEvent({
-#               owner: process.env.REPO_OWNER,
-#               repo: process.env.REPO_NAME,
-#               event_type: "trigger-review",
-#               client_payload: {
-#                 pr_number: process.env.PR_NUMBER,
-#                 repo_owner: process.env.REPO_OWNER,
-#                 repo_name: process.env.REPO_NAME
-#               }
-#             });
+      - name: Trigger Review in student-mgmnt-sys
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.G_TOKEN }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: process.env.REPO_OWNER,
+              repo: process.env.REPO_NAME,
+              event_type: "trigger-review",
+              client_payload: {
+                pr_number: process.env.PR_NUMBER,
+                repo_owner: process.env.REPO_OWNER,
+                repo_name: process.env.REPO_NAME
+              }
+            });
 
-#   print-review-comment:
-#     runs-on: ubuntu-latest
+  print-review-comment:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v2
-#         continue-on-error: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        continue-on-error: false
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '14'
-#         continue-on-error: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+        continue-on-error: false
 
-#       - name: Create .env file
-#         run: |
-#           echo "GITHUB_TOKEN=${{ secrets.G_TOKEN }}" >> .env
-#           echo "OPENAI_API_KEY=${{ secrets.OPEN_API}}" >> .env
-#           echo "GITHUB_OWNER=${{ github.repository_owner }}" >> .env
-#         continue-on-error: false
+      - name: Create .env file
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.G_TOKEN }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPEN_API}}" >> .env
+          echo "GITHUB_OWNER=${{ github.repository_owner }}" >> .env
+        continue-on-error: false
 
-#       - name: Install dependencies
-#         run: npm install
-#         continue-on-error: false
+      - name: Install dependencies
+        run: npm install
+        continue-on-error: false
 
-#       - name: Install dotenv
-#         run: npm install dotenv
-#         continue-on-error: false
+      - name: Install dotenv
+        run: npm install dotenv
+        continue-on-error: false
 
-#       - name: Run Review Comment Generator
-#         run: |
-#           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-#             PR_NUMBER=${{ github.event.client_payload.pr_number }}
-#             REPO_OWNER=${{ github.event.client_payload.repo_owner }}
-#             REPO_NAME=${{ github.event.client_payload.repo_name }}
-#           else
-#             PR_NUMBER=${{ github.event.pull_request.number }}
-#             REPO_OWNER=${{ github.event.repository.owner.login }}
-#             REPO_NAME=${{ github.event.repository.full_name }}
-#           fi
-#           npm start $PR_NUMBER $REPO_OWNER $REPO_NAME
-#         continue-on-error: false
+      - name: Run Review Comment Generator
+        run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            PR_NUMBER=${{ github.event.client_payload.pr_number }}
+            REPO_OWNER=${{ github.event.client_payload.repo_owner }}
+            REPO_NAME=${{ github.event.client_payload.repo_name }}
+          else
+            PR_NUMBER=${{ github.event.pull_request.number }}
+            REPO_OWNER=${{ github.event.repository.owner.login }}
+            REPO_NAME=${{ github.event.repository.full_name }}
+          fi
+          npm start $PR_NUMBER $REPO_OWNER $REPO_NAME
+        continue-on-error: false
