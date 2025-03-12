@@ -69,10 +69,15 @@ jobs:
         continue-on-error: false
 
       - name: Run Review Comment Generator
-        env:
-          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
-          REPO_OWNER: ${{ github.event.client_payload.repo_owner }}
-          REPO_NAME: ${{ github.event.client_payload.repo_name }}
         run: |
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            PR_NUMBER=${{ github.event.client_payload.pr_number }}
+            REPO_OWNER=${{ github.event.client_payload.repo_owner }}
+            REPO_NAME=${{ github.event.client_payload.repo_name }}
+          else
+            PR_NUMBER=${{ github.event.pull_request.number }}
+            REPO_OWNER=${{ github.event.repository.owner.login }}
+            REPO_NAME=${{ github.event.repository.full_name }}
+          fi
           npm start $PR_NUMBER $REPO_OWNER $REPO_NAME
         continue-on-error: false
