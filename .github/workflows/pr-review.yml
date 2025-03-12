@@ -69,9 +69,10 @@ jobs:
         continue-on-error: false
 
       - name: Run Review Comment Generator
+        env:
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+          REPO_OWNER: ${{ github.event.client_payload.repo_owner }}
+          REPO_NAME: ${{ github.event.client_payload.repo_name }}
         run: |
-          PR_NUMBER=${{ github.event.client_payload.pr_number }}
-          REPO_OWNER=${{ github.event.client_payload.repo_owner }}
-          REPO_NAME=${{ github.event.client_payload.repo_name }}
           npm start $PR_NUMBER $REPO_OWNER $REPO_NAME
         continue-on-error: false
